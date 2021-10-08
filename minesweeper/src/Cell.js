@@ -4,7 +4,7 @@ import { faBomb, faFlag } from '@fortawesome/free-solid-svg-icons';
 function Cell(props) {
     if (props.flagged) {
         return (
-            <td key={props.coords} className="hidden-cell" onClick={() => props.handleCellTrigger(props.coords[0], props.coords[1], false)} onContextMenu={(e) => props.handleRightClick(e, props.coords[0], props.coords[1])}><FontAwesomeIcon icon={faFlag} /></td>
+            <td key={props.coords} className="hidden-cell" onContextMenu={(e) => props.handleRightClick(e, props.coords[0], props.coords[1])}><FontAwesomeIcon icon={faFlag} /></td>
         );
     } else if (props.hidden) {
         return (

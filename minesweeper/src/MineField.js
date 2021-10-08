@@ -43,6 +43,7 @@ function MineField(props) {
 
         if (props.cells[x][y] === 0) {
             // reveal all surrounding cells that have not been revealed (recursive, send newHideMap?)
+            hideMap[x][y] = false;
             if (hideMap[x+1][y-1]) {
                 handleCellTrigger(x+1, y-1, true);
             }
