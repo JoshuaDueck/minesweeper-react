@@ -35,7 +35,10 @@ function MineField(props) {
         logCellInfo(x, y);
 
         if (!props.gameRunning) {
-            props.beginGame(x, y);
+            props.beginGame(x, y); // Change the paradigm. Make beginGame run once, and if it has already run, do not let it run again.
+                                    // This can be checked here by the prop (which should hopefully update in the parent and here, and also can be
+                                    // checked in the parent's "beginGame" method.) That should fix a number of initial issues. Now to figure out how
+                                    // we are looping outside of the board's range, or looping over invalid cells.
 
             // Debug: reveal all tiles
             // revealAllTiles();
@@ -45,40 +48,40 @@ function MineField(props) {
             // reveal all surrounding cells that have not been revealed (recursive, send newHideMap?)
             hideMap[x][y] = false;
             if (hideMap[x+1][y-1]) {
-                // handleCellTrigger(x+1, y-1, true);
+                // handleCellTrigger(x+1, y-1);
                 hideMap[x+1][y-1] = false;
             }
             if (hideMap[x+1][y]) {
-                // handleCellTrigger(x+1, y, true);
+                // handleCellTrigger(x+1, y);
                 hideMap[x+1][y] = false;
             }
             if (hideMap[x+1][y+1]) {
-                // handleCellTrigger(x+1, y+1, true);
+                // handleCellTrigger(x+1, y+1);
                 hideMap[x+1][y+1] = false;
             }
             if (hideMap[x][y-1]) {
-                // handleCellTrigger(x, y-1, true);
+                // handleCellTrigger(x, y-1);
                 hideMap[x][y-1] = false;
             }
             if (hideMap[x][y+1]) {
-                // handleCellTrigger(x, y+1, true);
+                // handleCellTrigger(x, y+1);
                 hideMap[x][y+1] = false;
             }
             if (hideMap[x-1][y-1]) {
-                // handleCellTrigger(x-1, y-1, true);
+                // handleCellTrigger(x-1, y-1);
                 hideMap[x-1][y-1] = false;
             }
             if (hideMap[x-1][y]) {
-                // handleCellTrigger(x-1, y, true);
+                // handleCellTrigger(x-1, y);
                 hideMap[x-1][y] = false;
             }
             if (hideMap[x-1][y+1]) {
-                // handleCellTrigger(x-1, y+1, true);
+                // handleCellTrigger(x-1, y+1);
                 hideMap[x-1][y+1] = false;
             }
         } else if (props.cells[x][y] === -1) {
             // bomb, end game.
-            alert("BOMB!");
+            alert("BOOOOOOOOOOOM!");
         } else {
             // reveal the cell.
             // if (x > 0 && x < props.cells.length-1 && y > 0 && y < props.cells[x].length-1) {

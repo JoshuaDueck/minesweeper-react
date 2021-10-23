@@ -23,28 +23,30 @@ function App() {
 	const [gameRunning, setGameRunning] = useState(false);
 
 	const handleBeginGame = (x, y) => {
-		console.log("Laying bombs around ("+x+", "+y+")");
-
-		let bombsToSet = (HEIGHT * WIDTH) / 8;
-		let newCells = [...cells];
-
-		while (bombsToSet > 0) {
-			for (let i = 0; i < HEIGHT; i++) {
-				for (let j = 0; j < WIDTH; j++) {
-					if (bombsToSet > 0) {
-						if (Math.random() < 0.1 && (i <= x-2 || i > x+2 || j <= y-2 || j > y+2)) {
-							console.log("Setting a bomb at ("+x+", "+y+")");
-							newCells[i][j] = -1;
-							bombsToSet--;
+		if (!gameRunning) {
+			console.log("Beginning game!\nLaying bombs around ("+x+", "+y+")");
+	
+			let bombsToSet = (HEIGHT * WIDTH) / 8;
+			let newCells = [...cells];
+	
+			while (bombsToSet > 0) {
+				for (let i = 0; i < HEIGHT; i++) {
+					for (let j = 0; j < WIDTH; j++) {
+						if (bombsToSet > 0) {
+							if (Math.random() < 0.1 && (i <= x-2 || i > x+2 || j <= y-2 || j > y+2)) {
+								console.log("Setting a bomb at ("+i+", "+j+")");
+								newCells[i][j] = -1;
+								bombsToSet--;
+							}
 						}
 					}
 				}
 			}
+	
+			setCells(newCells);
+			setGameRunning(true);
+			calculateCellNumbers();
 		}
-
-		setCells(newCells);
-		setGameRunning(true);
-		calculateCellNumbers();
 	};
 
 	const calculateCellNumbers = () => {
