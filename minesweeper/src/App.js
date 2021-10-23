@@ -20,9 +20,9 @@ function App() {
 	}
 
 	const [cells, setCells] = useState(initialCells);
-	const [bombsSet, setBombsSet] = useState(false);
+	const [gameRunning, setGameRunning] = useState(false);
 
-	const handleBombSet = (x, y) => {
+	const handleBeginGame = (x, y) => {
 		console.log("Laying bombs around ("+x+", "+y+")");
 
 		let bombsToSet = (HEIGHT * WIDTH) / 8;
@@ -43,7 +43,7 @@ function App() {
 		}
 
 		setCells(newCells);
-		setBombsSet(true);
+		setGameRunning(true);
 		calculateCellNumbers();
 	};
 
@@ -111,7 +111,7 @@ function App() {
 		<div className="App">
 			<div className="title">Minesweeper</div>
 			<div className="game-window">
-				<MineField cells={cells} setBombs={(x, y) => handleBombSet(x, y)} bombsSet={bombsSet}/>
+				<MineField cells={cells} beginGame={(x, y) => handleBeginGame(x, y)} gameRunning={gameRunning}/>
 			</div>
 		</div>
 	);

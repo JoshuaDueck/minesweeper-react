@@ -31,11 +31,11 @@ function MineField(props) {
         }
     }
 
-    const handleCellTrigger = (x, y, bombsSet) => {
+    const handleCellTrigger = (x, y) => {
         logCellInfo(x, y);
 
-        if (!bombsSet) {
-            props.setBombs(x, y);
+        if (!props.gameRunning) {
+            props.beginGame(x, y);
 
             // Debug: reveal all tiles
             // revealAllTiles();
@@ -45,38 +45,48 @@ function MineField(props) {
             // reveal all surrounding cells that have not been revealed (recursive, send newHideMap?)
             hideMap[x][y] = false;
             if (hideMap[x+1][y-1]) {
-                handleCellTrigger(x+1, y-1, true);
+                // handleCellTrigger(x+1, y-1, true);
+                hideMap[x+1][y-1] = false;
             }
             if (hideMap[x+1][y]) {
-                handleCellTrigger(x+1, y, true);
+                // handleCellTrigger(x+1, y, true);
+                hideMap[x+1][y] = false;
             }
             if (hideMap[x+1][y+1]) {
-                handleCellTrigger(x+1, y+1, true);
+                // handleCellTrigger(x+1, y+1, true);
+                hideMap[x+1][y+1] = false;
             }
             if (hideMap[x][y-1]) {
-                handleCellTrigger(x, y-1, true);
+                // handleCellTrigger(x, y-1, true);
+                hideMap[x][y-1] = false;
             }
             if (hideMap[x][y+1]) {
-                handleCellTrigger(x, y+1, true);
+                // handleCellTrigger(x, y+1, true);
+                hideMap[x][y+1] = false;
             }
             if (hideMap[x-1][y-1]) {
-                handleCellTrigger(x-1, y-1, true);
+                // handleCellTrigger(x-1, y-1, true);
+                hideMap[x-1][y-1] = false;
             }
             if (hideMap[x-1][y]) {
-                handleCellTrigger(x-1, y, true);
+                // handleCellTrigger(x-1, y, true);
+                hideMap[x-1][y] = false;
             }
             if (hideMap[x-1][y+1]) {
-                handleCellTrigger(x-1, y+1, true);
+                // handleCellTrigger(x-1, y+1, true);
+                hideMap[x-1][y+1] = false;
             }
         } else if (props.cells[x][y] === -1) {
             // bomb, end game.
+            alert("BOMB!");
         } else {
             // reveal the cell.
-            if (x > 0 && x < props.cells.length-1 && y > 0 && y < props.cells[x].length-1) {
-                const newHideMap = [...hideMap];
-                newHideMap[x][y] = false;
-                setHideMap(newHideMap);
-            }
+            // if (x > 0 && x < props.cells.length-1 && y > 0 && y < props.cells[x].length-1) {
+            //     const newHideMap = [...hideMap];
+            //     newHideMap[x][y] = false;
+            //     setHideMap(newHideMap);
+            // }
+            props.cells[x][y] = false;
         }
     };
 
