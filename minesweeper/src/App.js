@@ -26,7 +26,7 @@ function App() {
 		if (!gameRunning) {
 			console.log("Beginning game!\nLaying bombs around ("+x+", "+y+")");
 	
-			let bombsToSet = (HEIGHT * WIDTH) / 8;
+			let bombsToSet = (HEIGHT * WIDTH) / 4;
 			let newCells = [...cells];
 	
 			while (bombsToSet > 0) {
