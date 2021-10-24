@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Cell from './Cell.js';
 import './App.css'
 
 function MineField(props) {
     let hm = []; // Hide map
-    let fm = []; // Flag map 
+    let fm = []; // Flag map
+    let surroundingIndices = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]; // Contains offsets for each surrounding index.
 
     // Initialize the hide map and flag map.
     for (let i = 0; i < props.cells.length; i++) {
@@ -25,37 +26,58 @@ function MineField(props) {
         console.log("Clicked ("+x+", "+y+")");
     }
 
-    const revealAllTiles = () => {
+    const revealAllCells = () => {
+        const newHideMap = [...hideMap];
+
         for (let i = 0; i < hideMap.length; i++) {
             for (let j = 0; j < hideMap[i].length; j++) {
-                hideMap[i][j] = false;
+                newHideMap[i][j] = false;
             }
         }
+
+        setHideMap(newHideMap);
     }
 
     const handleCellClick = (x, y) => {
         logCellInfo(x, y);
         // This will check if the game has begun yet, then will reveal the cell recursively.
         if (!props.gameRunning) {
-            props.beginGame(x, y); // The issue that is currently happening is that the state is not updating in time before this function is
-                                   // called again. I think we need to finish the function, then call another function to continue the
-                                   // game? I am not sure. We immediately recurse within this "handleCellTrigger", which should probably
-                                   // not be the case. I would imagine we could turn this into a different function before moving on to reveal
-                                   // the cells. I dunno.
+            props.beginGame(x, y);
+        }
 
-            // Debug: reveal all tiles
-            // revealAllTiles();
+        if (!hideMap[x][y]) {
+            quickReveal(x, y);
         }
 
         revealCells(x, y);
     }
 
-    // We are currently having some issues when it comes to revealing cells.
-    // I have found that there are particular issues with revealing tiles to the left (y-1) of the current tile.
-    // Not sure what that means.
+    // Checks for the number of surrounding flags.
+    // If the number of surrounding flags is equal to the current
+    const quickReveal = (x, y) => {
+        console.log("Revealing around ("+x+", "+y+")");
+        let flagCount = 0;
+        for (let i = 0; i < surroundingIndices.length; i++) {
+            if (flagMap[x+surroundingIndices[i][0]][y+surroundingIndices[i][1]]) {
+                flagCount++;
+            }
+        }
+
+        console.log("Flag Count = "+flagCount+", ... number = "+props.cells[x][y].number);
+        if (flagCount !== 0 && flagCount === props.cells[x][y]) {
+            console.log("GOT HERE!");
+            for (let i = 0; i < surroundingIndices.length; i++) {
+                revealCells(x+surroundingIndices[i][0], y+surroundingIndices[i][1]);
+            }
+        }
+    }
+
     const revealCells = (x, y) => {
         // This will recursively reveal all adjacent cells.
-        if (x >= 0 && x < props.cells.length && y >= 0 && y < props.cells[x].length) {
+        if (x >= 0 &&
+            x < props.cells.length &&
+            y >= 0 && y < props.cells[x].length &&
+            !flagMap[x][y]) {
             if (props.cells[x][y] === 0) {
                 console.log("Clicked an empty tile.");
                 // reveal all surrounding cells that have not been revealed (recursive, send newHideMap?)
@@ -65,43 +87,35 @@ function MineField(props) {
 
                 console.log(hideMap);
 
-                // The issue is that we are hitting the end (then adding 1 to x, falling off the end).
                 // We really only need to check for the first value, since the second value should be falsy (if undefined).
                 if (x < props.cells.length-1 && hideMap[x+1][y-1]) {
                     revealCells(x+1, y-1);
-                    // hideMap[x+1][y-1] = false;
                 }
                 if (x < props.cells.length-1 && hideMap[x+1][y]) {
                     revealCells(x+1, y);
-                    // hideMap[x+1][y] = false;
                 }
                 if (x < props.cells.length-1 && hideMap[x+1][y+1]) {
                     revealCells(x+1, y+1);
-                    // hideMap[x+1][y+1] = false;
                 }
                 if (hideMap[x][y-1]) {
                     revealCells(x, y-1);
-                    // hideMap[x][y-1] = false;
                 }
                 if (hideMap[x][y+1]) {
                     revealCells(x, y+1);
-                    // hideMap[x][y+1] = false;
                 }
                 if (x > 0 && hideMap[x-1][y-1]) {
                     revealCells(x-1, y-1);
-                    // hideMap[x-1][y-1] = false;
                 }
                 if (x > 0 && hideMap[x-1][y]) {
                     revealCells(x-1, y);
-                    // hideMap[x-1][y] = false;
                 }
                 if (x > 0 && hideMap[x-1][y+1]) {
                     revealCells(x-1, y+1);
-                    // hideMap[x-1][y+1] = false;
                 }
             } else if (props.cells[x][y] === -1) {
                 // bomb, end game.
                 alert("BOOOOOOOOOOOM!");
+                revealAllCells();
             } else {
                 // reveal the cell.
                 const newHideMap = [...hideMap];
@@ -111,22 +125,15 @@ function MineField(props) {
         }
     }
 
-    const handleCellTrigger = (x, y) => {
-        logCellInfo(x, y);
-
-
-
-        
-    };
-
     const handleRightClick = (event, x, y) => {
         event.preventDefault();
         logCellInfo(x, y);
 
-        const newFlagMap = [...flagMap];
-        newFlagMap[x][y] = !newFlagMap[x][y];
-
-        setFlagMap(newFlagMap);
+        if (hideMap[x][y]) {
+            const newFlagMap = [...flagMap];
+            newFlagMap[x][y] = !newFlagMap[x][y];
+            setFlagMap(newFlagMap);
+        }
     }
     
     return (

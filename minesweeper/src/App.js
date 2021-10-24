@@ -26,20 +26,16 @@ function App() {
 		if (!gameRunning) {
 			console.log("Beginning game!\nLaying bombs around ("+x+", "+y+")");
 	
-			let bombsToSet = (HEIGHT * WIDTH) / 4;
+			let bombsToSet = (HEIGHT * WIDTH) / 5;
 			let newCells = [...cells];
 	
 			while (bombsToSet > 0) {
-				for (let i = 0; i < HEIGHT; i++) {
-					for (let j = 0; j < WIDTH; j++) {
-						if (bombsToSet > 0) {
-							if (Math.random() < 0.1 && (i <= x-2 || i > x+2 || j <= y-2 || j > y+2)) {
-								console.log("Setting a bomb at ("+i+", "+j+")");
-								newCells[i][j] = -1;
-								bombsToSet--;
-							}
-						}
-					}
+				let randX = Math.floor(Math.random() * HEIGHT);
+				let randY = Math.floor(Math.random() * WIDTH);
+
+				if (newCells[randX][randY] !== -1 && (randX > x+3 || randX < x-3) || (randY > y+3 || randY < y-3)) {
+					newCells[randX][randY] = -1;
+					bombsToSet--;
 				}
 			}
 	
