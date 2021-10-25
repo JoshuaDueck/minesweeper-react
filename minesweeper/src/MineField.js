@@ -26,6 +26,7 @@ function MineField(props) {
         console.log("Clicked ("+x+", "+y+")");
     }
 
+    // TODO: Add checking for flags, when revealing, use icons for flagged but incorrect
     const revealAllCells = () => {
         const newHideMap = [...hideMap];
 
