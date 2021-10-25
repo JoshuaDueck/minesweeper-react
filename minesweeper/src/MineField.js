@@ -58,7 +58,7 @@ function MineField(props) {
         console.log("Revealing around ("+x+", "+y+")");
         let flagCount = 0;
         for (let i = 0; i < surroundingIndices.length; i++) {
-            if (flagMap[x+surroundingIndices[i][0]][y+surroundingIndices[i][1]]) {
+            if (x+surroundingIndices[i][0] < props.cells.length-1 && x+surroundingIndices[i][0] > 0 && flagMap[x+surroundingIndices[i][0]][y+surroundingIndices[i][1]]) {
                 flagCount++;
             }
         }
@@ -145,8 +145,8 @@ function MineField(props) {
                             {row.map((cell, j) => {
                                 return (
                                     <Cell
-                                        key={(i,j)}
-                                        coords={(i,j)}
+                                        key={[i,j]}
+                                        coords={[i,j]}
                                         number={cell}
                                         handleCellClick={() => handleCellClick(i, j)}
                                         handleRightClick={(e) => handleRightClick(e, i, j)}

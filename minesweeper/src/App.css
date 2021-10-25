@@ -37,6 +37,10 @@
 	}
 }
 
+.instructions {
+	text-align: left;
+}
+
 .field-table {
 	margin: auto;
 	border-collapse: collapse;

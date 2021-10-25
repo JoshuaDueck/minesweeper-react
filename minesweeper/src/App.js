@@ -33,7 +33,7 @@ function App() {
 				let randX = Math.floor(Math.random() * HEIGHT);
 				let randY = Math.floor(Math.random() * WIDTH);
 
-				if (newCells[randX][randY] !== -1 && (randX > x+3 || randX < x-3) || (randY > y+3 || randY < y-3)) {
+				if (newCells[randX][randY] !== -1 && ((randX > x+2 || randX <= x-2) || (randY > y+2 || randY <= y-2))) {
 					newCells[randX][randY] = -1;
 					bombsToSet--;
 				}
@@ -110,6 +110,13 @@ function App() {
 			<div className="title">Minesweeper</div>
 			<div className="game-window">
 				<MineField cells={cells} beginGame={(x, y) => handleBeginGame(x, y)} gameRunning={gameRunning}/>
+			</div>
+			<div className="instructions">
+				<ul>
+					<li>Click tiles to reveal the number of mines they touch.</li>
+					<li>Right click tiles you think may contain mines.</li>
+					<li>Click revealed number tiles that have enough flagged tiles around them to auto-reveal other surrounding tiles.</li>
+				</ul>
 			</div>
 		</div>
 	);
