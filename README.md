@@ -11,4 +11,4 @@ This is a very rudementary project, but I could add some features to make the ga
 - Win condition.
 - Better mine information on cell reveal (reveal incorrect flags).
 - More animations.
-- Better bomb distribution algorithm/better bomb counter algorithm.
+- Better bomb distribution algorithm (no clumps/not too far apart).
