@@ -1,7 +1,7 @@
 # React Minesweeper
 A minesweeper clone built with react.
 
-Visit [the demo site](qr.joshuadueck.com:4000) to try it out.
+Visit qr.joshuadueck.com:4000 to try it out.
 
 
 ## Upcoming Features
