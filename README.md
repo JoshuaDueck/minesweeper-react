@@ -3,6 +3,8 @@ A minesweeper clone built with react.
 
 Visit qr.joshuadueck.com:4000 to try it out.
 
+## Purpose
+I created this during a between-semesters break to keep my brain active. The main thing I wanted to learn about was React with hooks.
 
 ## Upcoming Features
 This is a very rudementary project, but I could add some features to make the gameplay a bit better. A few examples would be:
